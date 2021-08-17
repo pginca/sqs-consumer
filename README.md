@@ -126,7 +126,8 @@ Creates a new SQS consumer.
 * `queueUrl` - _String_ - The SQS queue URL
 * `region` - _String_ - The AWS region (default `eu-west-1`)
 * `handleMessage` - _Function_ - An `async` function (or function that returns a `Promise`) to be called whenever a message is received. Receives an SQS message object as it's first argument.
-* `handleMessageBatch` - _Function_ - An `async` function (or function that returns a `Promise`) to be called whenever a batch of messages is received. Similar to `handleMessage` but will receive the list of messages, not each message individually. **If both are set, `handleMessageBatch` overrides `handleMessage`**.
+* `handleMessageBatch` - _Function_ - An `async` function (or function that returns a `Promise`) to be called whenever a batch of messages is received. Similar to `handleMessage` but will receive the list of messages, not each message individually. **If both are set, `handleMessageBatch` overrides `handleMessage`**. In this fork, this method should return and object contaning
+two arrays, success and failure. `Success` contains message ids that were successfully processed by the consumer and should be deleted from the queue, and `failure` contains message ids that were not processed correctly by the consumer and should be kept in the queue for later retry.
 * `handleMessageTimeout` - _Number_ - Time in ms to wait for `handleMessage` to process a message before timing out. Emits `timeout_error` on timeout. By default, if `handleMessage` times out, the unprocessed message returns to the end of the queue.
 * `attributeNames` - _Array_ - List of queue attributes to retrieve (i.e. `['All', 'ApproximateFirstReceiveTimestamp', 'ApproximateReceiveCount']`).
 * `messageAttributeNames` - _Array_ - List of message attributes to retrieve (i.e. `['name', 'address']`).
